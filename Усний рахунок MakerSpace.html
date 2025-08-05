@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Усний рахунок</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 5px;
+      background: #f0f8ff;
+    }
+
+    .number {
+      font-size: 64px;
+      margin: 20px 0;
+    }
+
+    .result {
+      font-size: 28px;
+      margin-top: 20px;
+    }
+
+    input, select, button {
+      padding: 10px;
+      font-size: 18px;
+      margin: 10px;
+    }
+
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+
+    .incorrect {
+      color: red;
+      font-weight: bold;
+    }
+
+    .balloon {
+      position: absolute;
+      width: 20px;
+      height: 30px;
+      background: radial-gradient(circle, #ff69b4, #ff1493);
+      border-radius: 50% 50% 50% 50%;
+      animation: rise 4s linear forwards;
+    }
+
+    @keyframes rise {
+      0% {
+        bottom: 0;
+        opacity: 1;
+      }
+      100% {
+        bottom: 100%;
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h3>Програма для усного рахунку MakerSpace</h3>
+  <div id="mode">Одноцифрові (-9 до 9)</div>
+   
+  <label>
+    Швидкість:
+    <select id="time">
+      <option value="1000">1 секунда </option>
+      <option value="2000">2 секунди </option>
+      <option value="3000">3 секунди </option>
+    </select>
+  </label>
+  <br>
+  
+  <label>
+    Кількість цифр:
+    <select id="count_number">
+      <option value="3">3 </option>
+      <option value="7">7 </option>
+      <option value="12">12 </option>
+    </select>
+  </label>
+  
+  <br>
+  
+  
+  <button onclick="start()">Старт</button>
+
+  <div class="number" id="currentNumber"></div>
+
+  <div id="inputArea" style="display:none;">
+    Ваша відповідь: 
+    <input type="number" id="userAnswer">
+    <button onclick="checkAnswer()">Перевірити</button>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    let sum = 0;
+    let count = 0;
+    let timer;
+    const currentNumber = document.getElementById("currentNumber");
+    const result = document.getElementById("result");
+    const inputArea = document.getElementById("inputArea");
+	
+	
+    function randomNumber() {
+        return Math.floor(Math.random() * 19) - 9; // -9 to 9
+    }
+
+    function start() {
+
+      sum = 0;
+      count = 0;
+      result.textContent = "";
+      inputArea.style.display = "none";
+      nextNumber();
+	  let inputElement = document.getElementById('userAnswer').value = '';; // очистити поле input js
+    }
+
+    function nextNumber() {
+      const time = document.getElementById("time").value;
+	  const count_number = document.getElementById("count_number").value;
+	  //alert(count_number);
+	  if (count >= count_number) {
+        currentNumber.textContent = "";
+        inputArea.style.display = "block";
+        return;
+      }
+
+      const num = randomNumber(mode);
+      sum += num;
+      currentNumber.textContent = num > 0 ? "+" + num : num;
+      count++;
+		
+      timer = setTimeout(() => nextNumber(mode), time);
+    }
+
+    function checkAnswer() {
+      const userAnswer = parseInt(document.getElementById("userAnswer").value, 10);
+      if (userAnswer === sum) {
+        result.innerHTML = `<span class="correct">Правильно! Відповідь: ${sum}</span>`;
+        launchBalloons();
+      } else {
+        result.innerHTML = `<span class="incorrect">Неправильно. Правильна відповідь: ${sum}</span>`;
+      }
+    }
+
+    function launchBalloons() {
+      for (let i = 0; i < 30; i++) {
+        const balloon = document.createElement("div");
+        balloon.className = "balloon";
+        balloon.style.left = Math.random() * window.innerWidth + "px";
+        balloon.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 4000);
+      }
+    }
+  </script>
+</body>
+</html>
