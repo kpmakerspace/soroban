@@ -8,9 +8,14 @@
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 5px;
-      background: #f0f8ff;
+      background: white;
     }
 
+	 h3 {
+		color: green;
+	  }
+
+	
     .number {
       font-size: 64px;
       margin: 20px 0;
@@ -26,7 +31,13 @@
       font-size: 18px;
       margin: 10px;
     }
-
+	
+	#currentNumber{
+		font-weight: bold;
+		font-size: 100px;
+		color: green;
+	}
+	
     .correct {
       color: green;
       font-weight: bold;
@@ -56,14 +67,124 @@
         opacity: 0;
       }
     }
+	
+	/*  class="gradient-button">Натисни мене!  */
+	.gradient-button {
+	  display: inline-block;
+	  padding: 12px 24px;
+	  font-size: 16px;
+	  font-weight: bold;
+	  color: #fff;
+	  background: linear-gradient(45deg, #4CAF50, #2E8B57); /* Основний градієнт */
+	  border: none;
+	  border-radius: 8px; /* Заокруглені кути */
+	  cursor: pointer;
+	  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Красива тінь */
+	  transition: all 0.3s ease; /* Плавний перехід */
+	}
+
+	/* Стиль при наведенні курсора */
+	.gradient-button:hover {
+	  background: linear-gradient(45deg, #2E8B57, #4CAF50); /* Зміна градієнта */
+	  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Більш помітна тінь */
+	  transform: translateY(-2px); /* Невеликий підйом кнопки */
+	}
+
+	/* Стиль при натисканні */
+	.gradient-button:active {
+	  transform: translateY(0); /* Повернення кнопки на місце */
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+	
+	/* class="outline-button">Дізнатися більше */
+	.outline-button {
+	  display: inline-block;
+	  padding: 12px 24px;
+	  font-size: 16px;
+	  font-weight: bold;
+	  color: #007BFF;
+	  background: transparent; /* Прозорий фон */
+	  border: 2px solid #007BFF; /* Рамка */
+	  border-radius: 50px; /* Сильно заокруглені кути */
+	  cursor: pointer;
+	  transition: all 0.3s ease;
+	}
+
+	/* Стиль при наведенні курсора */
+	.outline-button:hover {
+	  background: #007BFF; /* Зміна фону */
+	  color: #fff; /* Зміна кольору тексту */
+	}
+
+	/* Стиль при натисканні */
+	.outline-button:active {
+	  background: #0056b3;
+	  border-color: #0056b3;
+	}
+	
+	
+	
+	
+	/* Адаптивні стилі для мобільних пристроїв */
+	@media screen and (max-width: 992px) {
+	  body {
+		padding: 10px; /* Збільшуємо відступи */
+	  }
+
+	  h3 {
+		font-size: 35px; /* Зменшуємо розмір заголовка */
+	  }
+		
+	 #mode {
+      font-size: 24px;
+      margin: 20px 0;
+    }	
+	
+	#speed, #count_num, #inputArea, .correct{
+      font-size: 24px;
+      margin: 20px 0;
+    }	
+	
+	#time, #count_number, #start, #userAnswer, .outline-button{
+		width: 40%;
+	}
+		
+		
+	  .number {
+		font-size: 48px; /* Зменшуємо розмір цифр */
+	  }
+
+	  .result {
+		font-size: 20px; /* Зменшуємо розмір тексту результату */
+	  }
+
+	  input,
+	  select,
+	  button {
+		width: 90%; /* Робимо елементи ширшими для легшого натискання */
+		box-sizing: border-box; /* Враховуємо padding у ширині */
+		font-size: 16px; /* Зменшуємо розмір шрифту */
+	  }
+	  
+	  .balloon {
+		width: 15px; /* Зменшуємо розмір кульок */
+		height: 25px;
+	  }
+	}
+	
+
+
+	
   </style>
 </head>
 <body>
-  <h3>Програма для усного рахунку MakerSpace</h3>
+  <img src="images/makerspace.png"  title="makerspace">
+  <h3>Програма для усного рахунку</h3>
   <div id="mode">Одноцифрові (-9 до 9)</div>
    
-  <label>
+  <label id = "speed">
     Швидкість:
+	<br>
     <select id="time">
       <option value="1000">1 секунда </option>
       <option value="2000">2 секунди </option>
@@ -72,8 +193,9 @@
   </label>
   <br>
   
-  <label>
-    Кількість цифр:
+  <label id = "count_num">
+    Кількість цифр: 
+	<br>
     <select id="count_number">
       <option value="3">3 </option>
       <option value="7">7 </option>
@@ -84,18 +206,24 @@
   <br>
   
   
-  <button onclick="start()">Старт</button>
+  <button id="start" onclick="start()" class="gradient-button">Старт</button>
 
   <div class="number" id="currentNumber"></div>
 
   <div id="inputArea" style="display:none;">
     Ваша відповідь: 
-    <input type="text" id="userAnswer">
-    <button onclick="checkAnswer()">Перевірити</button>
+	<br>
+    <input type="number" id="userAnswer" min="-99" max="99">
+	<br>
+    <button onclick="checkAnswer()" class="outline-button">Перевірити</button>
   </div>
 
   <div class="result" id="result"></div>
 
+	<br><br><br>
+	<img src="images/logo_makerspace.png"  title="makerspace" height="100">
+	
+	
   <script>
     let sum = 0;
     let count = 0;
@@ -106,8 +234,12 @@
 	
 	
     function randomNumber() {
-        return Math.floor(Math.random() * 19) - 9; // -9 to 9
-    }
+	  let num = Math.floor(Math.random() * 19) - 9; // Генеруємо число
+	  if (num === 0) {
+		return randomNumber(); // Якщо нуль, викликаємо функцію знову
+	  }
+	  return num; // Повертаємо, якщо не нуль
+	}
 
     function start() {
 
@@ -160,6 +292,3 @@
   </script>
 </body>
 </html>
-
-
-
